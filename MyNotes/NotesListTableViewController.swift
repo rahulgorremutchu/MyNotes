@@ -82,7 +82,10 @@ class NotesListTableViewController: UITableViewController {
 //    }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "showEditorVC", sender: indexPath)
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "showEditorVC", sender: indexPath)
+        }
+
     }
 
     
@@ -119,8 +122,6 @@ class NotesListTableViewController: UITableViewController {
         
         do {
             try managedObjectContext?.save()
-            let indexPath: IndexPath = IndexPath(row: 0, section: 0)
-            self.performSegue(withIdentifier: "showEditorVC", sender: indexPath)
         } catch {
             print(error)
         }
@@ -166,6 +167,9 @@ extension NotesListTableViewController: NSFetchedResultsControllerDelegate {
         case .insert:
             if let indexpath = newIndexPath {
                 tableView.insertRows(at: [indexpath], with: .automatic)
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "showEditorVC", sender: indexpath)
+                }
             }
         case .delete:
             if let indexpath = indexPath {
