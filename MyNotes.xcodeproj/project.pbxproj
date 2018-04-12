@@ -8,22 +8,26 @@
 
 /* Begin PBXBuildFile section */
 		C417DEE7207DD24000DCD4D1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C417DEE6207DD24000DCD4D1 /* AppDelegate.swift */; };
-		C417DEE9207DD24000DCD4D1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C417DEE8207DD24000DCD4D1 /* ViewController.swift */; };
 		C417DEEC207DD24000DCD4D1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C417DEEA207DD24000DCD4D1 /* Main.storyboard */; };
 		C417DEEF207DD24000DCD4D1 /* MyNotes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C417DEED207DD24000DCD4D1 /* MyNotes.xcdatamodeld */; };
 		C417DEF1207DD24000DCD4D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C417DEF0207DD24000DCD4D1 /* Assets.xcassets */; };
 		C417DEF4207DD24000DCD4D1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C417DEF2207DD24000DCD4D1 /* LaunchScreen.storyboard */; };
+		C417DEFC207DD2D000DCD4D1 /* NotesListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C417DEFB207DD2D000DCD4D1 /* NotesListTableViewController.swift */; };
+		C417DEFE207DDB3700DCD4D1 /* NotesListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C417DEFD207DDB3700DCD4D1 /* NotesListTableViewCell.swift */; };
+		C417DF00207DE76600DCD4D1 /* NotesEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C417DEFF207DE76600DCD4D1 /* NotesEditorViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C417DEE3207DD24000DCD4D1 /* MyNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C417DEE6207DD24000DCD4D1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C417DEE8207DD24000DCD4D1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		C417DEEB207DD24000DCD4D1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C417DEEE207DD24000DCD4D1 /* MyNotes.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyNotes.xcdatamodel; sourceTree = "<group>"; };
 		C417DEF0207DD24000DCD4D1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C417DEF3207DD24000DCD4D1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C417DEF5207DD24000DCD4D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C417DEFB207DD2D000DCD4D1 /* NotesListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesListTableViewController.swift; sourceTree = "<group>"; };
+		C417DEFD207DDB3700DCD4D1 /* NotesListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesListTableViewCell.swift; sourceTree = "<group>"; };
+		C417DEFF207DE76600DCD4D1 /* NotesEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesEditorViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +61,9 @@
 			isa = PBXGroup;
 			children = (
 				C417DEE6207DD24000DCD4D1 /* AppDelegate.swift */,
-				C417DEE8207DD24000DCD4D1 /* ViewController.swift */,
+				C417DEFB207DD2D000DCD4D1 /* NotesListTableViewController.swift */,
+				C417DEFD207DDB3700DCD4D1 /* NotesListTableViewCell.swift */,
+				C417DEFF207DE76600DCD4D1 /* NotesEditorViewController.swift */,
 				C417DEEA207DD24000DCD4D1 /* Main.storyboard */,
 				C417DEF0207DD24000DCD4D1 /* Assets.xcassets */,
 				C417DEF2207DD24000DCD4D1 /* LaunchScreen.storyboard */,
@@ -99,7 +105,7 @@
 				TargetAttributes = {
 					C417DEE2207DD24000DCD4D1 = {
 						CreatedOnToolsVersion = 9.1;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -139,9 +145,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C417DEE9207DD24000DCD4D1 /* ViewController.swift in Sources */,
 				C417DEE7207DD24000DCD4D1 /* AppDelegate.swift in Sources */,
+				C417DEFC207DD2D000DCD4D1 /* NotesListTableViewController.swift in Sources */,
 				C417DEEF207DD24000DCD4D1 /* MyNotes.xcdatamodeld in Sources */,
+				C417DF00207DE76600DCD4D1 /* NotesEditorViewController.swift in Sources */,
+				C417DEFE207DDB3700DCD4D1 /* NotesListTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,11 +286,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = YTBG22XWR3;
 				INFOPLIST_FILE = MyNotes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.quickeans.MyNotes;
+				PRODUCT_BUNDLE_IDENTIFIER = com.qBitStream.TCQuiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "22c50956-35c3-4bc6-b8ea-87b753aa6a41";
+				PROVISIONING_PROFILE_SPECIFIER = TCQuizDevelopment;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -292,11 +303,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = YTBG22XWR3;
 				INFOPLIST_FILE = MyNotes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.quickeans.MyNotes;
+				PRODUCT_BUNDLE_IDENTIFIER = com.qBitStream.TCQuiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "9804d582-a312-45dc-a866-9f2403844f5a";
+				PROVISIONING_PROFILE_SPECIFIER = TCQuizDistribution;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
