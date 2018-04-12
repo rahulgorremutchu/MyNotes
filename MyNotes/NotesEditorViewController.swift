@@ -11,7 +11,7 @@ import CoreData
 
 class NotesEditorViewController: UIViewController {
 
-    @IBOutlet weak var txtViewEditor: EditorTextView!
+    @IBOutlet weak var editorTableView: UITableView!
     var managedObjectContext: NSManagedObjectContext?
     var note: Note?
     
@@ -19,48 +19,27 @@ class NotesEditorViewController: UIViewController {
         super.viewDidLoad()
 
         title = note!.subject
-        
-        txtViewEditor.text = """
-        Bank Name :- Union Bank of India
-        Account No :- 40890201001813
-        Name of Branch :- Edakochi
-        MICR Code :- 682026016
-        IFSC Code :- UBIN0540897
-        """
-        
-        
+        editorTableView.estimatedRowHeight = 70.0
+        editorTableView.rowHeight = UITableViewAutomaticDimension
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 
-
-class EditorTextView: UITextView {
-    
-    override var contentSize: CGSize {
-        didSet {
-            invalidateIntrinsicContentSize()
-            setNeedsLayout()
-            layoutIfNeeded()
-        }
+extension NotesEditorViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
     }
     
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: super.intrinsicContentSize.width, height: contentSize.height)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "EditorTableViewCell") as! EditorTableViewCell
+        cell.txtViewEditor.delegate = self
+        return cell
+    }
+}
+
+extension NotesEditorViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        editorTableView.beginUpdates()
+        editorTableView.endUpdates()
     }
 }

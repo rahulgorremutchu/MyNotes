@@ -73,28 +73,56 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="j5o-cp-aUh" customClass="EditorTextView" customModule="MyNotes" customModuleProvider="target">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Jo1-tV-iD9">
                                 <rect key="frame" x="0.0" y="88" width="375" height="690"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <variation key="heightClass=regular-widthClass=regular">
-                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                </variation>
-                            </textView>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditorTableViewCell" rowHeight="70" id="145-IT-uLZ" customClass="EditorTableViewCell" customModule="MyNotes" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="70"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="145-IT-uLZ" id="Trv-eB-AA3">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="XIC-B0-cJ6">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                </textView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Uav-IG-pu0" firstAttribute="trailing" secondItem="XIC-B0-cJ6" secondAttribute="trailing" id="5BB-GT-QyX"/>
+                                                <constraint firstItem="Uav-IG-pu0" firstAttribute="bottom" secondItem="XIC-B0-cJ6" secondAttribute="bottom" id="bqN-6g-vmv"/>
+                                                <constraint firstItem="XIC-B0-cJ6" firstAttribute="leading" secondItem="Uav-IG-pu0" secondAttribute="leading" id="cDs-3G-koI"/>
+                                                <constraint firstItem="XIC-B0-cJ6" firstAttribute="top" secondItem="Uav-IG-pu0" secondAttribute="top" id="sey-EY-zPj"/>
+                                            </constraints>
+                                            <viewLayoutGuide key="safeArea" id="Uav-IG-pu0"/>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="txtViewEditor" destination="XIC-B0-cJ6" id="xUf-DQ-UbQ"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="eBO-wn-0SR" id="1dx-rx-0RD"/>
+                                    <outlet property="delegate" destination="eBO-wn-0SR" id="kev-OJ-LTF"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="cGx-dY-3O9" firstAttribute="bottom" secondItem="j5o-cp-aUh" secondAttribute="bottom" id="7yD-Q4-XuX"/>
-                            <constraint firstItem="j5o-cp-aUh" firstAttribute="leading" secondItem="cGx-dY-3O9" secondAttribute="leading" id="Abh-hp-XOg"/>
-                            <constraint firstItem="cGx-dY-3O9" firstAttribute="trailing" secondItem="j5o-cp-aUh" secondAttribute="trailing" id="CSO-u1-nBp"/>
-                            <constraint firstItem="j5o-cp-aUh" firstAttribute="top" secondItem="cGx-dY-3O9" secondAttribute="top" id="abo-Ls-haS"/>
+                            <constraint firstItem="cGx-dY-3O9" firstAttribute="bottom" secondItem="Jo1-tV-iD9" secondAttribute="bottom" id="IdL-gb-cm7"/>
+                            <constraint firstItem="Jo1-tV-iD9" firstAttribute="leading" secondItem="cGx-dY-3O9" secondAttribute="leading" id="TDL-C0-dwj"/>
+                            <constraint firstItem="Jo1-tV-iD9" firstAttribute="top" secondItem="cGx-dY-3O9" secondAttribute="top" id="vTK-t6-0QS"/>
+                            <constraint firstItem="cGx-dY-3O9" firstAttribute="trailing" secondItem="Jo1-tV-iD9" secondAttribute="trailing" id="ydu-By-JhQ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="cGx-dY-3O9"/>
                     </view>
                     <navigationItem key="navigationItem" title="Title" largeTitleDisplayMode="never" id="vNA-pq-4nb"/>
                     <connections>
-                        <outlet property="txtViewEditor" destination="j5o-cp-aUh" id="tBi-ar-zYT"/>
+                        <outlet property="editorTableView" destination="Jo1-tV-iD9" id="Fd1-vR-EO1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x1E-mB-ROc" userLabel="First Responder" sceneMemberID="firstResponder"/>

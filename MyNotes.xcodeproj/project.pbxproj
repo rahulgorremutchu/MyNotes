@@ -15,6 +15,7 @@
 		C417DEFC207DD2D000DCD4D1 /* NotesListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C417DEFB207DD2D000DCD4D1 /* NotesListTableViewController.swift */; };
 		C417DEFE207DDB3700DCD4D1 /* NotesListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C417DEFD207DDB3700DCD4D1 /* NotesListTableViewCell.swift */; };
 		C417DF00207DE76600DCD4D1 /* NotesEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C417DEFF207DE76600DCD4D1 /* NotesEditorViewController.swift */; };
+		C4F799BA207F862C00F21200 /* EditorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F799B9207F862C00F21200 /* EditorTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		C417DEFB207DD2D000DCD4D1 /* NotesListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesListTableViewController.swift; sourceTree = "<group>"; };
 		C417DEFD207DDB3700DCD4D1 /* NotesListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesListTableViewCell.swift; sourceTree = "<group>"; };
 		C417DEFF207DE76600DCD4D1 /* NotesEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesEditorViewController.swift; sourceTree = "<group>"; };
+		C4F799B9207F862C00F21200 /* EditorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 				C417DEFB207DD2D000DCD4D1 /* NotesListTableViewController.swift */,
 				C417DEFD207DDB3700DCD4D1 /* NotesListTableViewCell.swift */,
 				C417DEFF207DE76600DCD4D1 /* NotesEditorViewController.swift */,
+				C4F799B9207F862C00F21200 /* EditorTableViewCell.swift */,
 				C417DEEA207DD24000DCD4D1 /* Main.storyboard */,
 				C417DEF0207DD24000DCD4D1 /* Assets.xcassets */,
 				C417DEF2207DD24000DCD4D1 /* LaunchScreen.storyboard */,
@@ -149,6 +152,7 @@
 				C417DEFC207DD2D000DCD4D1 /* NotesListTableViewController.swift in Sources */,
 				C417DEEF207DD24000DCD4D1 /* MyNotes.xcdatamodeld in Sources */,
 				C417DF00207DE76600DCD4D1 /* NotesEditorViewController.swift in Sources */,
+				C4F799BA207F862C00F21200 /* EditorTableViewCell.swift in Sources */,
 				C417DEFE207DDB3700DCD4D1 /* NotesListTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
