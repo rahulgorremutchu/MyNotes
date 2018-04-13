@@ -12,17 +12,23 @@ import CoreLocation
 
 class NotesListTableViewController: UITableViewController {
     
+    enum SortBy: String {
+        case title = "subject", dateTime = "createdAt"
+    }
+    
     var locManager = CLLocationManager()
     let appDel = UIApplication.shared.delegate as! AppDelegate
     var managedObjectContext: NSManagedObjectContext?
     var resultController: NSFetchedResultsController<Note>!
     var alertController = UIAlertController()
+    private let cellIdentifier = "NotesListTableViewCell"
+    fileprivate var searchController: UISearchController!
+    let notesListSearchController = NotesListSearchTableViewController(style: .grouped)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         locManager.requestWhenInUseAuthorization()
-        
         managedObjectContext = appDel.persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<Note> = Note.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "subject", ascending: true)
@@ -33,8 +39,57 @@ class NotesListTableViewController: UITableViewController {
             try! resultController.performFetch()
         }
         
+        notesListSearchController.delegate = self
+        searchController = UISearchController(searchResultsController: notesListSearchController)
+        searchController.searchResultsUpdater = notesListSearchController
+        searchController.dimsBackgroundDuringPresentation = true
+        searchController.searchBar.delegate = self as? UISearchBarDelegate
+        searchController.searchBar.sizeToFit()
+        searchController.searchBar.tintColor = .white
+        if let textfield = searchController.searchBar.value(forKey: "searchField") as? UITextField {
+            textfield.textColor = UIColor.blue
+            if let backgroundview = textfield.subviews.first {
+                backgroundview.backgroundColor = UIColor.white
+                backgroundview.layer.cornerRadius = 10;
+                backgroundview.clipsToBounds = true;
+            }
+        }
+        if #available(iOS 11.0, *) {
+            navigationItem.searchController = searchController
+        } else {
+            navigationItem.titleView = searchController.searchBar
+        }
+        definesPresentationContext = true
     }
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if let fetchedObjects = resultController.fetchedObjects { notesListSearchController.notes = fetchedObjects }
+        notesListSearchController.managedObjectContext = resultController.managedObjectContext
+    }
+    
+    
+    private func sortByCriteria(type: SortBy) {
+        let sortDescriptor = NSSortDescriptor(key: type.rawValue, ascending: true)
+        resultController.fetchRequest.sortDescriptors = [sortDescriptor]
+        do {
+            try! resultController.performFetch()
+            tableView.reloadData()
+        }
+    }
+    
+    
+    @IBAction func sortSegmentAction(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            sortByCriteria(type: .title)
+        case 1:
+            sortByCriteria(type: .dateTime)
+        default: break
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -49,12 +104,16 @@ class NotesListTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NotesListTableViewCell", for: indexPath) as! NotesListTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! NotesListTableViewCell
         let note = resultController.object(at: indexPath)
         cell.textLabel?.text = note.subject
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .full
-        cell.detailTextLabel?.text = String(dateFormatter.string(from: note.createdAt!))
+        let timeStamp = DateFormatter.localizedString(from: note.createdAt!, dateStyle: .medium, timeStyle: .short)
+        cell.detailTextLabel?.text = timeStamp
+        if note.latitude != 0 && note.longitude != 0 {
+            cell.accessoryType = .detailDisclosureButton
+        } else {
+            cell.accessoryType = .disclosureIndicator
+        }
         return cell
     }
     
@@ -77,9 +136,12 @@ class NotesListTableViewController: UITableViewController {
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 
-//    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//        return nil
-//    }
+
+    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "showMapVC", sender: indexPath)
+        }
+    }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         DispatchQueue.main.async {
@@ -97,6 +159,20 @@ class NotesListTableViewController: UITableViewController {
             editorVC.managedObjectContext = self.managedObjectContext!
            // editorVC.managedObjectContext = resultController.managedObjectContext
             editorVC.note = resultController.object(at: sender)
+        }
+        
+        if let sender = sender as? Note, let editorVC = segue.destination as? NotesEditorViewController {
+            if searchController.isActive {
+                searchController.searchBar.resignFirstResponder()
+                editorVC.managedObjectContext = self.managedObjectContext!
+                editorVC.note = sender
+            }
+        }
+        
+        if let sender = sender as? IndexPath, let mapVC = segue.destination as? MapViewController {
+            let note = resultController.object(at: sender)
+            mapVC.latitude = note.latitude
+            mapVC.longitude = note.longitude
         }
     }
     
@@ -189,6 +265,15 @@ extension NotesListTableViewController: UITextFieldDelegate {
         return true
     }
     
+}
+
+extension NotesListTableViewController: SelectSearchCellProtocol {
+    func didSelectCell(with note: Note) {
+        DispatchQueue.main.async {
+            self.searchController.resignFirstResponder()
+            self.performSegue(withIdentifier: "showEditorVC", sender: note)
+        }
+    }
 }
 
 

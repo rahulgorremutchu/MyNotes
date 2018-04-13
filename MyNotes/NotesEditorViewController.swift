@@ -107,6 +107,7 @@ extension NotesEditorViewController: UIImagePickerControllerDelegate, UINavigati
         attributedString.append(attrStringWithImage)
         attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 17.0), range: NSMakeRange(0, attributedString.length))
         txtViewEditor.attributedText = attributedString
+        txtViewEditor.becomeFirstResponder()
     }
 }
 
