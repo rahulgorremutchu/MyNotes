@@ -18,7 +18,7 @@ class NotesListTableViewController: UITableViewController {
     
     var locManager = CLLocationManager()
     let appDel = UIApplication.shared.delegate as! AppDelegate
-    var managedObjectContext: NSManagedObjectContext?
+    var managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
     var resultController: NSFetchedResultsController<Note>!
     var alertController = UIAlertController()
     private let cellIdentifier = "NotesListTableViewCell"
@@ -33,7 +33,7 @@ class NotesListTableViewController: UITableViewController {
         let fetchRequest: NSFetchRequest<Note> = Note.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "subject", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
-        resultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
+        resultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         resultController.delegate = self
         do {
             try! resultController.performFetch()
@@ -66,7 +66,6 @@ class NotesListTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         if let fetchedObjects = resultController.fetchedObjects { notesListSearchController.notes = fetchedObjects }
-        notesListSearchController.managedObjectContext = resultController.managedObjectContext
     }
     
     
@@ -122,7 +121,7 @@ class NotesListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
             let note = self.resultController.object(at: indexPath)
-            self.managedObjectContext?.delete(note)
+            self.managedObjectContext.delete(note)
             do {
                 try self.resultController.managedObjectContext.save()
                 completion(true)
@@ -156,7 +155,7 @@ class NotesListTableViewController: UITableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let sender = sender as? IndexPath, let editorVC = segue.destination as? NotesEditorViewController {
-            editorVC.managedObjectContext = self.managedObjectContext!
+            editorVC.managedObjectContext = self.managedObjectContext
            // editorVC.managedObjectContext = resultController.managedObjectContext
             editorVC.note = resultController.object(at: sender)
         }
@@ -164,7 +163,7 @@ class NotesListTableViewController: UITableViewController {
         if let sender = sender as? Note, let editorVC = segue.destination as? NotesEditorViewController {
             if searchController.isActive {
                 searchController.searchBar.resignFirstResponder()
-                editorVC.managedObjectContext = self.managedObjectContext!
+                editorVC.managedObjectContext = self.managedObjectContext
                 editorVC.note = sender
             }
         }
@@ -178,7 +177,7 @@ class NotesListTableViewController: UITableViewController {
     
     
     fileprivate func insertSubject(with title: String) {
-        let note = Note(context: managedObjectContext!)
+        let note = Note(context: managedObjectContext)
         note.subject = title
         note.createdAt = Date()
         note.modifiedAt = nil
@@ -197,7 +196,7 @@ class NotesListTableViewController: UITableViewController {
         }
         
         do {
-            try managedObjectContext?.save()
+            try managedObjectContext.save()
         } catch {
             print(error)
         }
@@ -250,6 +249,7 @@ extension NotesListTableViewController: NSFetchedResultsControllerDelegate {
         case .delete:
             if let indexpath = indexPath {
                 tableView.deleteRows(at: [indexpath], with: .automatic)
+                if let fetchedObjects = resultController.fetchedObjects { notesListSearchController.notes = fetchedObjects }
             }
         default: break
         }

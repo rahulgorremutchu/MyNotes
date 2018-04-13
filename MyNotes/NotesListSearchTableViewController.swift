@@ -17,7 +17,6 @@ class NotesListSearchTableViewController: UITableViewController {
     
     var notes: [Note]?
     var filteredNotes: [Note]?
-    var managedObjectContext: NSManagedObjectContext?
     var delegate: SelectSearchCellProtocol?
     private let cellIdentifier = "NotesListSearchTableViewCell"
 

@@ -14,7 +14,7 @@ class NotesEditorViewController: UIViewController {
     @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBOutlet weak var attachButton: UIBarButtonItem!
     @IBOutlet weak var txtViewEditor: UITextView!
-    var managedObjectContext: NSManagedObjectContext?
+    var managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
     var note: Note?
     
     override func viewDidLoad() {
@@ -38,7 +38,7 @@ class NotesEditorViewController: UIViewController {
         note.content = txtViewEditor.attributedText
         note.modifiedAt = Date()
         do {
-            try managedObjectContext?.save()
+            try managedObjectContext.save()
             navigationController?.popViewController(animated: true)
         } catch {
             print(error)
