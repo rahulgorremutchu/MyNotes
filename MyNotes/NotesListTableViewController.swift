@@ -89,93 +89,6 @@ class NotesListTableViewController: UITableViewController {
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    // MARK: - Table view data source
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return resultController.sections?[section].numberOfObjects ?? 0
-    }
-
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! NotesListTableViewCell
-        let note = resultController.object(at: indexPath)
-        cell.textLabel?.text = note.subject
-        let timeStamp = DateFormatter.localizedString(from: note.createdAt!, dateStyle: .medium, timeStyle: .short)
-        cell.detailTextLabel?.text = timeStamp
-        if note.latitude != 0 && note.longitude != 0 {
-            cell.accessoryType = .detailDisclosureButton
-        } else {
-            cell.accessoryType = .disclosureIndicator
-        }
-        return cell
-    }
-    
-    // MARK: - Table view delegate
-    
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-            let note = self.resultController.object(at: indexPath)
-            self.managedObjectContext.delete(note)
-            do {
-                try self.resultController.managedObjectContext.save()
-                completion(true)
-            } catch {
-                print(error)
-                completion(false)
-            }
-            
-        }
-        deleteAction.backgroundColor = .red
-        return UISwipeActionsConfiguration(actions: [deleteAction])
-    }
-
-
-    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        DispatchQueue.main.async {
-            self.performSegue(withIdentifier: "showMapVC", sender: indexPath)
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        DispatchQueue.main.async {
-            self.performSegue(withIdentifier: "showEditorVC", sender: indexPath)
-        }
-
-    }
-
-    
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let sender = sender as? IndexPath, let editorVC = segue.destination as? NotesEditorViewController {
-            editorVC.managedObjectContext = self.managedObjectContext
-           // editorVC.managedObjectContext = resultController.managedObjectContext
-            editorVC.note = resultController.object(at: sender)
-        }
-        
-        if let sender = sender as? Note, let editorVC = segue.destination as? NotesEditorViewController {
-            if searchController.isActive {
-                searchController.searchBar.resignFirstResponder()
-                editorVC.managedObjectContext = self.managedObjectContext
-                editorVC.note = sender
-            }
-        }
-        
-        if let sender = sender as? IndexPath, let mapVC = segue.destination as? MapViewController {
-            let note = resultController.object(at: sender)
-            mapVC.latitude = note.latitude
-            mapVC.longitude = note.longitude
-        }
-    }
-    
-    
     fileprivate func insertSubject(with title: String) {
         let note = Note(context: managedObjectContext)
         note.subject = title
@@ -224,6 +137,91 @@ class NotesListTableViewController: UITableViewController {
         continueAction.isEnabled = false
         self.present(alertController, animated: true, completion: nil)
         
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+
+    }
+
+    // MARK: - Table view data source
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return resultController.sections?[section].numberOfObjects ?? 0
+    }
+
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! NotesListTableViewCell
+        let note = resultController.object(at: indexPath)
+        cell.textLabel?.text = note.subject
+        let timeStamp = DateFormatter.localizedString(from: note.createdAt!, dateStyle: .medium, timeStyle: .short)
+        cell.detailTextLabel?.text = timeStamp
+        if note.latitude != 0 && note.longitude != 0 {
+            cell.accessoryType = .detailDisclosureButton
+        } else {
+            cell.accessoryType = .disclosureIndicator
+        }
+        return cell
+    }
+    
+    // MARK: - Table view delegate
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completion) in
+            let note = self.resultController.object(at: indexPath)
+            self.managedObjectContext.delete(note)
+            do {
+                try self.resultController.managedObjectContext.save()
+                completion(true)
+            } catch {
+                print(error)
+                completion(false)
+            }
+            
+        }
+        
+        deleteAction.backgroundColor = .red
+        deleteAction.image = #imageLiteral(resourceName: "trash")
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+
+
+    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "showMapVC", sender: indexPath)
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "showEditorVC", sender: indexPath)
+        }
+
+    }
+
+    
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let sender = sender as? IndexPath, let editorVC = segue.destination as? NotesEditorViewController {
+            editorVC.managedObjectContext = self.managedObjectContext
+            editorVC.note = resultController.object(at: sender)
+        }
+        
+        if let sender = sender as? Note, let editorVC = segue.destination as? NotesEditorViewController {
+            if searchController.isActive {
+                searchController.searchBar.resignFirstResponder()
+                editorVC.managedObjectContext = self.managedObjectContext
+                editorVC.note = sender
+            }
+        }
+        
+        if let sender = sender as? IndexPath, let mapVC = segue.destination as? MapViewController {
+            let note = resultController.object(at: sender)
+            mapVC.latitude = note.latitude
+            mapVC.longitude = note.longitude
+        }
     }
     
 }
